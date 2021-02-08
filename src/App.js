@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import React, { Component } from "react";
+// new
+import { connect } from "react-redux";
+import { addCounter } from "./redux/Actions/addCounter";
+import { decreaseCounter } from "./redux/Actions/decreaseCounter";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  handelCounter = () => {
+    this.props.addCounter();
+  };
+  minusHandler = () => {
+    this.props.decreaseCounter();
+  };
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          {this.props.counter}
+          <div>
+            <button onClick={this.handelCounter}>+</button>
+            <button onClick={this.minusHandler}>-</button>
+          </div>
+        </header>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    counter: state.add,
+  };
+};
+const mapDispatchToProprs = {
+  addCounter: addCounter,
+  decreaseCounter: decreaseCounter,
+};
+
+export default connect(mapStateToProps, mapDispatchToProprs)(App);
